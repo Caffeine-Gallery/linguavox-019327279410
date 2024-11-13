@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
     voices = synth.getVoices();
 });
 
-englishText.addEventListener('input', async () => {
+async function translateAndDisplay() {
     const text = englishText.value;
     const language = targetLanguage.value;
     if (text.trim() !== '') {
@@ -26,14 +26,17 @@ englishText.addEventListener('input', async () => {
     } else {
         translatedText.textContent = '';
     }
-});
+}
+
+englishText.addEventListener('input', translateAndDisplay);
+targetLanguage.addEventListener('change', translateAndDisplay);
+
 
 speakButton.addEventListener('click', () => {
     const text = translatedText.textContent;
     if (text.trim() !== '') {
         const utterance = new SpeechSynthesisUtterance(text);
         if (voices.length > 0) {
-            // Choose a voice based on language if available
             const matchingVoice = voices.find(voice => voice.lang.startsWith(targetLanguage.value));
             utterance.voice = matchingVoice || voices[0];
         }
